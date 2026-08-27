@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Balcão da Batata & Açaí — Sistema de Vendas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- ================= LOGIN / CADASTRO ================= -->
+<div id="authScreen">
+  <div class="auth-card">
+    <div class="auth-logo">
+      <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M8 30 L8 56 L28 56 L28 30 Z" fill="#c9975a"/>
+        <path d="M8 30 L5 25 L31 25 L28 30 Z" fill="#dba86e"/>
+        <rect x="11" y="12" width="4.5" height="20" rx="2" fill="#d9a441"/>
+        <rect x="17" y="7" width="4.5" height="25" rx="2" fill="#eec97a"/>
+        <rect x="23" y="14" width="4.5" height="18" rx="2" fill="#d9a441"/>
+        <circle cx="47" cy="34" r="17" fill="#8a5cc9"/>
+        <path d="M38 26 Q47 15 56 26 Q56 44 47 50 Q38 44 38 26 Z" fill="#6b3fa3"/>
+        <ellipse cx="47" cy="27" rx="7" ry="4" fill="#a97fe0"/>
+      </svg>
+      <div>
+        <div class="name">Balcão da Batata &amp; Açaí</div>
+        <div class="tag">Sistema de Controle de Vendas</div>
+      </div>
+    </div>
+
+    <div id="loginBlock">
+      <div class="auth-title">Entrar</div>
+      <div class="auth-sub">Informe seu usuário e senha para acessar o painel de vendas.</div>
+      <div class="auth-error" id="loginError">Usuário ou senha incorretos.</div>
+      <div class="field">
+        <label for="loginUser">Usuário</label>
+        <input type="text" id="loginUser" autocomplete="username">
+      </div>
+      <div class="field">
+        <label for="loginPass">Senha</label>
+        <input type="password" id="loginPass" autocomplete="current-password">
+      </div>
+      <button class="btn-primary" id="loginBtn">Entrar</button>
+      <div class="auth-reset"><a id="resetLink">Esqueci minha senha / trocar usuário</a></div>
+    </div>
+
+    <div id="signupBlock" class="hidden">
+      <div class="auth-title">Criar acesso</div>
+      <div class="auth-sub">Nenhum usuário configurado ainda. Crie o login que será usado para acessar o sistema.</div>
+      <div class="auth-error" id="signupError"></div>
+      <div class="field">
+        <label for="suUser">Usuário</label>
+        <input type="text" id="suUser" autocomplete="username">
+      </div>
+      <div class="field">
+        <label for="suPass">Senha</label>
+        <input type="password" id="suPass" autocomplete="new-password">
+      </div>
+      <div class="field">
+        <label for="suPass2">Confirmar senha</label>
+        <input type="password" id="suPass2" autocomplete="new-password">
+      </div>
+      <button class="btn-primary" id="signupBtn">Criar e entrar</button>
+    </div>
+
+    <div class="auth-note">O acesso é protegido por usuário e senha salvos neste sistema. Guarde suas credenciais em local seguro.</div>
+  </div>
+</div>
+
+<!-- ================= APP ================= -->
+<div id="appScreen" class="hidden">
+  <div class="topbar">
+    <div class="topbar-left">
+      <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M8 30 L8 56 L28 56 L28 30 Z" fill="#c9975a"/>
+        <path d="M8 30 L5 25 L31 25 L28 30 Z" fill="#dba86e"/>
+        <rect x="11" y="12" width="4.5" height="20" rx="2" fill="#d9a441"/>
+        <rect x="17" y="7" width="4.5" height="25" rx="2" fill="#eec97a"/>
+        <rect x="23" y="14" width="4.5" height="18" rx="2" fill="#d9a441"/>
+        <circle cx="47" cy="34" r="17" fill="#8a5cc9"/>
+        <path d="M38 26 Q47 15 56 26 Q56 44 47 50 Q38 44 38 26 Z" fill="#6b3fa3"/>
+        <ellipse cx="47" cy="27" rx="7" ry="4" fill="#a97fe0"/>
+      </svg>
+      <div>
+        <div class="topbar-title">Balcão da Batata &amp; Açaí</div>
+        <div class="topbar-sub">Painel de controle de vendas</div>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <div class="user-chip"><span class="dot" id="userInitial">?</span><span id="userName">—</span></div>
+      <button class="logout-btn" id="logoutBtn">Sair</button>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <div class="bar">
+      <div class="date-nav">
+        <button id="prevDay" title="Dia anterior">‹</button>
+        <span class="date-label" id="dateLabel">—</span>
+        <button id="nextDay" title="Próximo dia">›</button>
+        <button class="today-btn" id="todayBtn">Hoje</button>
+      </div>
+      <button class="prices-toggle" id="pricesToggle">Editar preços</button>
+    </div>
+
+    <div class="price-panel hidden" id="pricePanel">
+      <h3>Preços dos produtos</h3>
+      <div class="price-grid" id="priceGrid"></div>
+    </div>
+
+    <div class="section-title">1. Escolha os produtos</div>
+    <div class="product-grid" id="productGrid"></div>
+
+    <div class="section-title cart-section-title">2. Carrinho da venda</div>
+    <div class="cart-section">
+      <div class="cart-box" id="cartBox">
+        <div class="cart-empty">Toque nos produtos acima para adicionar ao carrinho.</div>
+      </div>
+      <button class="cart-clear-all hidden" id="cartClearAll">Esvaziar carrinho</button>
+    </div>
+
+    <div class="section-title">3. Forma de pagamento</div>
+    <div class="pay-grid">
+      <button class="pay-btn pix" data-method="Pix" disabled>Pix<small>transferência</small></button>
+      <button class="pay-btn cartao" data-method="Cartão" disabled>Cartão<small>débito / crédito</small></button>
+      <button class="pay-btn dinheiro" data-method="Dinheiro" disabled>Dinheiro<small>espécie</small></button>
+      <button class="pay-btn fiado" data-method="Fiado" disabled>Fiado<small>a pagar depois</small></button>
+    </div>
+    <div class="pay-hint" id="payHint">Toque em 1 ou 2 formas de pagamento (é possível dividir o valor entre duas).</div>
+
+    <div class="split-panel hidden" id="splitPanel">
+      <h3>Dividir o valor entre as duas formas</h3>
+      <div id="splitRows"></div>
+      <div class="split-status" id="splitStatus"></div>
+      <div class="split-actions">
+        <button type="button" id="splitEven">Dividir igual</button>
+        <button type="button" class="finalize-btn" id="finalizeSplitBtn" disabled>Finalizar venda</button>
+      </div>
+    </div>
+
+    <div class="hidden" id="singlePanel" style="margin: -8px 0 26px;">
+      <button type="button" class="finalize-btn" id="finalizeSingleBtn">Finalizar venda</button>
+    </div>
+
+    <div class="totals" id="totalsGrid"></div>
+
+    <div class="two-col">
+      <div>
+        <div class="section-title">Vendas do dia</div>
+        <div class="receipt" id="receiptBox">
+          <div class="loading">carregando vendas…</div>
+        </div>
+      </div>
+      <div>
+        <div class="section-title">Por produto</div>
+        <div class="product-totals" id="productTotalsBox"></div>
+      </div>
+    </div>
+
+    <div class="section-title">Resumo do mês</div>
+    <div class="bar" style="margin-bottom:16px;">
+      <div class="date-nav">
+        <button id="prevMonth" title="Mês anterior">‹</button>
+        <span class="date-label" id="monthLabel">—</span>
+        <button id="nextMonth" title="Próximo mês">›</button>
+      </div>
+      <button class="today-btn" id="thisMonthBtn">Este mês</button>
+    </div>
+    <div class="totals" id="monthTotalsGrid"></div>
+    <div class="product-totals" id="monthProductTotalsBox" style="margin-bottom:22px;"></div>
+
+    <div class="section-title">Vendas por produto — dia a dia do mês</div>
+    <div id="productDayTableBox" style="margin-bottom:22px;"></div>
+
+    <div class="footer-note">os dados ficam salvos automaticamente para o seu usuário</div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="js/script.js"></script>
+</body>
+</html>
